@@ -61,6 +61,7 @@ export default StyleSheet.create({
   buttonsContainer: {
     flexDirection: 'row',
     marginBottom: 30,
+    zIndex: 1,
   },
   button: {
     width: 50,
@@ -78,5 +79,44 @@ export default StyleSheet.create({
       width: 0,
       height: 2,
     },
+  },
+  matchContainer: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 99999,
+  },
+  matchImage: {
+    height: 60,
+    resizeMode: 'contain',
+  },
+  matchAvatar: {
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+    borderWidth: 5,
+    borderColor: '#FFF',
+    marginVertical: 30,
+  },
+  matchName: {
+    fontSize: 26,
+    fontWeight: '700',
+    color: '#FFF',
+  },
+  matchBio: {
+    marginTop: 10,
+    fontSize: 16,
+    color: 'rgba(255, 255, 255, 0.8)',
+    lineHeight: 24,
+    textAlign: 'center',
+    paddingHorizontal: 30,
+  },
+  matchClose: {
+    fontSize: 16,
+    color: 'rgba(255, 255, 255, 0.8)',
+    textAlign: 'center',
+    marginTop: 30,
+    fontWeight: '700',
   },
 });

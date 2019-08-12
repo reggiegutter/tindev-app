@@ -1,18 +1,20 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View, Image, Text, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import api from '../../services/api';
+import io from 'socket.io-client';
 
+import api from '../../services/api';
 import logo from '../../assets/logo.png';
 import like from '../../assets/like.png';
 import dislike from '../../assets/dislike.png';
+import itsamatch from '../../assets/itsamatch.png';
 import styles from './styles';
 
 function Main({ navigation }) {
   const dev = navigation.getParam('dev');
 
   const [devs, setDevs] = useState([]);
+  const [matchDev, setMatchDev] = useState(null);
 
   useEffect(() => {
     async function loadUsers() {
@@ -31,6 +33,16 @@ function Main({ navigation }) {
       }
     }
     loadUsers();
+  }, [dev]);
+
+  useEffect(() => {
+    const socket = io('http://10.0.2.2:3333', {
+      query: { dev },
+    });
+
+    socket.on('match', ioDev => {
+      setMatchDev(ioDev);
+    });
   }, [dev]);
 
   async function handleLike() {
@@ -107,6 +119,17 @@ function Main({ navigation }) {
       {devs.length === 0 && (
         <View style={styles.emptyWrapper}>
           <Text style={styles.empty}>Acabou :(</Text>
+        </View>
+      )}
+      {!!matchDev && (
+        <View style={styles.matchContainer}>
+          <Image source={itsamatch} style={styles.matchImage} />
+          <Image source={{ uri: matchDev.avatar }} style={styles.matchAvatar} />
+          <Text style={styles.matchName}>{matchDev.name}</Text>
+          <Text style={styles.matchBio}>{matchDev.bio}</Text>
+          <TouchableOpacity onPress={() => setMatchDev(null)}>
+            <Text style={styles.matchClose}>FECHAR</Text>
+          </TouchableOpacity>
         </View>
       )}
     </SafeAreaView>
